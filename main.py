@@ -454,7 +454,7 @@ def leave(message):
             picker = choice(data['players'])
             bot.send_message(room_num , 'Player {} has become new owner'.format(picker[0]))
             
-            room_db.update_one({'_id' : data['_id']} , {'$set' : {'owner' : [picker[0] , picker[1]]}})
+            room_db.update_one({'_id' : data['_id']} , {'$set' : {'owner' : [picker[1] , picker[0]]}})
             info('Player {} has become new owner in room {}'.format(picker[0] , room_num))
     else:
         bot.reply_to(message , 'You are not inside a room')
@@ -563,7 +563,7 @@ def kick(message):
                         data['players'].remove(player_list)
                         room_db.update_one({'_id' : data['_id']} , {'$set' : {'players' : data['players']}})
 
-                        stats_db.update_one({'_id' : player_list[1]} , {'$set' : {'room' : ""}})
+                        stats_db.update_one({'_id' : player_list[1]} , {'$set' : {'room' : []}})
 
                         return ''
 
