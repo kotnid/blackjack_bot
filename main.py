@@ -363,7 +363,9 @@ def react(chosen_inline_result):
                 msg += 'www everyone lost'
 
             bot.send_message(room_num , msg)
-            bot.send_video(room_num , 'https://c.tenor.com/CiW__asIWaIAAAAC/k-on-yui-hirasawa.gif' , None , 'Text')
+            if data['players'][player_pts.index(max(value for value in player_pts if int(value)<=21))][0] == 'tkt0506':
+                gif_list = ['https://c.tenor.com/CiW__asIWaIAAAAC/k-on-yui-hirasawa.gif' , 'https://c.tenor.com/ssO9d-jnRYIAAAAd/chika-fujiwara-spinning.gif']
+                bot.send_video(room_num , choice(gif_list) , None , 'Text')
 
             players_data = []
             for player_list in data['players']:
