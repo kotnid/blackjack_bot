@@ -157,6 +157,7 @@ Command available:
         /close_21 - close a room
         /stats_21 - show player stats
         /board_21 - show leaderboard
+        /room_21 - show room stats
 
 If you have any problem , pls contact tkt0506
 \ ''')
