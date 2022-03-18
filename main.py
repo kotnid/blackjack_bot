@@ -144,7 +144,8 @@ def start(message):
     bot.reply_to(message , ''' \
 21pts Bot
 
-The bot is made by kotnid 
+The bot is made by kotnid , code available
+https://github.com/kotnid/blackjack_bot
 
 Command available:
         /help - show this message
@@ -171,9 +172,9 @@ def open(message):
     if check_room(message.from_user.id) != False:
         bot.reply_to(message , 'You already inside a room :/')
     else:
-        if message.chat.type != "group":
+        if message.chat.type != "group" and message.chat.type != "supergroup":
             bot.reply_to(message , 'Pls use this function in a group')
-        
+            print(message.chat.type)
         else:
             myquery = {'_id' : message.chat.id}
             if room_db.count_documents(myquery) == 0:
@@ -227,6 +228,10 @@ def start(message):
 
             if data['status'] == '1':
                 bot.reply_to(message , 'The game start already')
+                return ''
+
+            if data['_id'] != message.chat.id:
+                bot.reply_to(message , 'Bruh wrong group')
                 return ''
 
             info("User {} with id {} start game in room {}".format(message.from_user.first_name , message.from_user.id , data['_id'] ))
@@ -293,23 +298,23 @@ def query_text(inline_query):
                         if data['players'].index(player_list) == data['number']:
                             r2 = types.InlineQueryResultArticle('r_get_card', 'Get card', types.InputTextMessageContent('Get Card'))
                             r3 = types.InlineQueryResultArticle('r_pass', 'Pass', types.InputTextMessageContent('Pass'))
-                            bot.answer_inline_query(inline_query.id, [r , r2 , r3] , cache_time = 1)
+                            bot.answer_inline_query(inline_query.id, [r , r2 , r3] , cache_time = 0)
                         
                         else:
-                            bot.answer_inline_query(inline_query.id, [r] , cache_time=1)
+                            bot.answer_inline_query(inline_query.id, [r] , cache_time=0)
 
             else:
                 r = types.InlineQueryResultArticle('1', 'The game not start yet', types.InputTextMessageContent('Use /start_21 to start game'))
-                bot.answer_inline_query(inline_query.id, [r]  , cache_time=1)
+                bot.answer_inline_query(inline_query.id, [r]  , cache_time=0)
 
         else:
             r = types.InlineQueryResultArticle('1', 'Pls use in group', types.InputTextMessageContent('Use /join_21 or /open_21 to join a room'))
             #r = types.InlineQueryResultArticle('2', 'Get card', test)
-            bot.answer_inline_query(inline_query.id, [r]  , cache_time=1)
+            bot.answer_inline_query(inline_query.id, [r]  , cache_time=0)
             
     else:
         r = types.InlineQueryResultArticle('1', 'You are not inside a room!', types.InputTextMessageContent('Use /join_21 or /open_21 to join a room'))
-        bot.answer_inline_query(inline_query.id, [r] , cache_time=1)
+        bot.answer_inline_query(inline_query.id, [r] , cache_time=0)
 
 
 
@@ -363,11 +368,13 @@ def react(chosen_inline_result):
             except:
                 msg += 'www everyone lost'
 
+            msg += '\n'+'use /start_21 to start a new game'
+
             bot.send_message(room_num , msg)
             if data['players'][player_pts.index(max(value for value in player_pts if int(value)<=21))][0] == 'tkt0506':
                 gif_list = ['https://c.tenor.com/CiW__asIWaIAAAAC/k-on-yui-hirasawa.gif' , 'https://c.tenor.com/ssO9d-jnRYIAAAAd/chika-fujiwara-spinning.gif']
                 bot.send_video(room_num , choice(gif_list) , None , 'Text')
-
+        
             players_data = []
             for player_list in data['players']:
                 players_data.append([player_list[0] , player_list[1] , []])   
