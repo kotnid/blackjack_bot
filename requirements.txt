@@ -1,0 +1,4 @@
+pymongo==4.0.2
+pyTelegramBotAPI==4.4.0
+aiohttp == 3.7.4.post0 
+dnspython == 1.16.0
