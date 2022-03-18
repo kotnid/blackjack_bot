@@ -28,6 +28,7 @@
 - /close_21 - close a room 
 - /stats_21 - show player stats 
 - /board_21 <num> - show leaderboard 
+- /room_21 - show room stats
 
 ## Credit ##
 - [rain2wood](https://github.com/rain2wood) for giving suggestion and inspiration
