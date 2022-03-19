@@ -134,8 +134,11 @@ def get_ace_values(temp_list , total):
 
     for ace_value in temp_list:
         value_list.append(total+ace_value)
-        
-    return max(value for value in value_list if value<=21)
+    
+    try:
+        return max(value for value in value_list if value<=21)
+    except:
+        return min(value for value in value_list)
     
         
 
@@ -364,16 +367,18 @@ def react(chosen_inline_result):
             try:
                 msg += '{} won with {} pts '.format(data['players'][player_pts.index(max(value for value in player_pts if int(value)<=21))][0] , max(value for value in player_pts if int(value)<=21))
                 stats_db.update_one({'_id' : data['players'][player_pts.index(max(value for value in player_pts if int(value)<=21))][1]} , {'$inc' : {'win' : 1}})
-                
+
+                if data['players'][player_pts.index(max(value for value in player_pts if int(value)<=21))][0] == 'tkt0506':
+                    gif_list = ['https://c.tenor.com/CiW__asIWaIAAAAC/k-on-yui-hirasawa.gif' , 'https://c.tenor.com/ssO9d-jnRYIAAAAd/chika-fujiwara-spinning.gif']
+                    bot.send_video(room_num , choice(gif_list) , None , 'Text')
+        
             except:
                 msg += 'www everyone lost'
 
             msg += '\n'+'use /start_21 to start a new game'
 
             bot.send_message(room_num , msg)
-            if data['players'][player_pts.index(max(value for value in player_pts if int(value)<=21))][0] == 'tkt0506':
-                gif_list = ['https://c.tenor.com/CiW__asIWaIAAAAC/k-on-yui-hirasawa.gif' , 'https://c.tenor.com/ssO9d-jnRYIAAAAd/chika-fujiwara-spinning.gif']
-                bot.send_video(room_num , choice(gif_list) , None , 'Text')
+            
         
             players_data = []
             for player_list in data['players']:
